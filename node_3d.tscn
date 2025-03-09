@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgg5l05ggvafv"]
+
+[ext_resource type="PackedScene" uid="uid://cjjmp5rsi3iri" path="res://Time Controller/time_controller.tscn" id="3_owhaw"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_aal1s"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Time" type="Node3D" parent="."]
+
+[node name="TimeController" parent="Time" instance=ExtResource("3_owhaw")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.54969)
+mesh = SubResource("SphereMesh_aal1s")

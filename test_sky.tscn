@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1yacanrp0oxf"]
+
+[ext_resource type="Shader" path="res://new_shader.gdshader" id="1_1de27"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_05eke"]
+shader = ExtResource("1_1de27")
+shader_parameter/top_color = Color(0.027451, 0.101961, 0.25098, 1)
+shader_parameter/bottom_color = Color(0.152941, 0.0666667, 0.270588, 1)
+shader_parameter/sun_scatter = Color(0.12549, 0.0862745, 0.372549, 1)
+shader_parameter/cloud_samples = 16
+
+[sub_resource type="Sky" id="Sky_m1cjs"]
+sky_material = SubResource("ShaderMaterial_05eke")
+
+[sub_resource type="Environment" id="Environment_u3o6m"]
+background_mode = 2
+sky = SubResource("Sky_m1cjs")
+
+[node name="WorldEnvironment" type="WorldEnvironment"]
+environment = SubResource("Environment_u3o6m")
