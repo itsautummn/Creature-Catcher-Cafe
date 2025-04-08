@@ -1,0 +1,9 @@
+[gd_resource type="Environment" load_steps=2 format=3 uid="uid://bwk356qrn546o"]
+
+[ext_resource type="Sky" uid="uid://cf82ncjoctka6" path="res://Sky/sky_material.tres" id="1_oyv51"]
+
+[resource]
+background_mode = 2
+sky = ExtResource("1_oyv51")
+adjustment_enabled = true
+adjustment_saturation = 1.5

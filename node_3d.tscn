@@ -1,17 +1,149 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgg5l05ggvafv"]
+[gd_scene load_steps=22 format=3 uid="uid://b00hdstrp1nrj"]
 
-[ext_resource type="PackedScene" uid="uid://cjjmp5rsi3iri" path="res://Time Controller/time_controller.tscn" id="3_owhaw"]
+[ext_resource type="PackedScene" uid="uid://d00d8ujaqxpwf" path="res://Sky/sky.tscn" id="1_j38rn"]
+[ext_resource type="PackedScene" uid="uid://c3yy68sh8tmt4" path="res://Player/player.tscn" id="2_noarx"]
+[ext_resource type="Shader" uid="uid://ytehgcices8y" path="res://test creature/test_creature.gdshader" id="3_a0tk4"]
+[ext_resource type="Script" uid="uid://4dfqf7777y6y" path="res://test creature/test_creature.gd" id="4_r3fl7"]
+[ext_resource type="Script" uid="uid://dl5g8gewu51vv" path="res://test creature/State Machine/test_creature_state_machine.gd" id="5_jka67"]
+[ext_resource type="Script" uid="uid://c0je0i862te2n" path="res://test creature/State Machine/Machines/test_wild_state_machine.gd" id="6_i5arm"]
+[ext_resource type="Script" uid="uid://dcxabak4n15af" path="res://test_creature_scared_state.gd" id="7_4arys"]
+[ext_resource type="Script" uid="uid://fnofv0g2bnje" path="res://test_creature_idle_state.gd" id="8_6iypd"]
+[ext_resource type="Script" uid="uid://dp26j337dt3nm" path="res://test_creature_tame_state.gd" id="8_cdqbm"]
+[ext_resource type="Script" uid="uid://dyudjj6s8w83s" path="res://test_creature_move_state.gd" id="8_tereu"]
+[ext_resource type="Script" uid="uid://80p8xts6rvjg" path="res://test_creature_curious_state.gd" id="9_tereu"]
+[ext_resource type="Script" uid="uid://5qwh3gypuxoi" path="res://test_creature_fall_state.gd" id="12_imku0"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_aal1s"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_1bjdf"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_noarx"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_pd42n"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wyixt"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_a0tk4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r3fl7"]
+render_priority = 0
+shader = ExtResource("3_a0tk4")
+shader_parameter/albedo = Color(0, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_jka67"]
+material = SubResource("ShaderMaterial_r3fl7")
+
+[sub_resource type="SphereMesh" id="SphereMesh_i5arm"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4arys"]
+radius = 7.18363
 
 [node name="Node3D" type="Node3D"]
 
-[node name="Time" type="Node3D" parent="."]
+[node name="WorldEnvironment" parent="." instance=ExtResource("1_j38rn")]
 
-[node name="TimeController" parent="Time" instance=ExtResource("3_owhaw")]
+[node name="Player" parent="." groups=["player"] instance=ExtResource("2_noarx")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22449, 0)
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Environment" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.54969)
-mesh = SubResource("SphereMesh_aal1s")
+[node name="Ground" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(9.40462, 0, 0, 0, 1, 0, 0, 0, 9.40462, 0, 0, 0)
+mesh = SubResource("PlaneMesh_1bjdf")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Environment/Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Ground/StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_noarx")
+debug_fill = false
+
+[node name="Wall" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(-4.58175e-07, 0, 1.64682, 0, 4.74112, 0, -10.4818, 0, -7.19847e-08, -6.36882, 2.13437, 1.6376)
+mesh = SubResource("BoxMesh_pd42n")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Environment/Wall"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Wall/StaticBody3D"]
+shape = SubResource("BoxShape3D_wyixt")
+
+[node name="Creature" type="CharacterBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.627167, -8.66727)
+script = ExtResource("4_r3fl7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Creature"]
+shape = SubResource("SphereShape3D_a0tk4")
+
+[node name="Shape" type="Node3D" parent="Environment/Creature"]
+
+[node name="Body" type="MeshInstance3D" parent="Environment/Creature/Shape"]
+mesh = SubResource("SphereMesh_jka67")
+skeleton = NodePath("../../root/@EditorNode@21269/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11479/@VSplitContainer@11131/@HSplitContainer@11133/@HSplitContainer@11135/@Control@11136/@SubViewportContainer@11137/@SubViewport@11138/Node3D/Environment")
+
+[node name="Left Eye" type="MeshInstance3D" parent="Environment/Creature/Shape"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -0.144328, 0.0957528, 0.367765)
+mesh = SubResource("SphereMesh_i5arm")
+skeleton = NodePath("../../root/@EditorNode@21269/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11479/@VSplitContainer@11131/@HSplitContainer@11133/@HSplitContainer@11135/@Control@11136/@SubViewportContainer@11137/@SubViewport@11138/Node3D/Environment")
+
+[node name="Left Eye2" type="MeshInstance3D" parent="Environment/Creature/Shape"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.140808, 0.0998639, 0.371619)
+mesh = SubResource("SphereMesh_i5arm")
+skeleton = NodePath("../../root/@EditorNode@21269/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11479/@VSplitContainer@11131/@HSplitContainer@11133/@HSplitContainer@11135/@Control@11136/@SubViewportContainer@11137/@SubViewport@11138/Node3D/Environment")
+
+[node name="CreatureStateMachine" type="Node" parent="Environment/Creature" node_paths=PackedStringArray("creature")]
+script = ExtResource("5_jka67")
+creature = NodePath("..")
+
+[node name="Wild" type="Node" parent="Environment/Creature/CreatureStateMachine" node_paths=PackedStringArray("starting_state")]
+script = ExtResource("6_i5arm")
+starting_state = NodePath("Idle")
+
+[node name="Scared" type="Node" parent="Environment/Creature/CreatureStateMachine/Wild" node_paths=PackedStringArray("fall_state", "idle_state")]
+script = ExtResource("7_4arys")
+fall_state = NodePath("../Fall")
+idle_state = NodePath("../Idle")
+movement_speed = 6.0
+
+[node name="Tame" type="Node" parent="Environment/Creature/CreatureStateMachine/Wild"]
+script = ExtResource("8_cdqbm")
+
+[node name="Move" type="Node" parent="Environment/Creature/CreatureStateMachine/Wild" node_paths=PackedStringArray("fall_state", "scared_state", "curious_state", "idle_state")]
+script = ExtResource("8_tereu")
+fall_state = NodePath("../Fall")
+scared_state = NodePath("../Scared")
+curious_state = NodePath("../Curious")
+idle_state = NodePath("../Idle")
+
+[node name="Curious" type="Node" parent="Environment/Creature/CreatureStateMachine/Wild" node_paths=PackedStringArray("fall_state", "scared_state", "tame_state", "idle_state")]
+script = ExtResource("9_tereu")
+fall_state = NodePath("../Fall")
+scared_state = NodePath("../Scared")
+tame_state = NodePath("../Tame")
+idle_state = NodePath("../Idle")
+
+[node name="Idle" type="Node" parent="Environment/Creature/CreatureStateMachine/Wild" node_paths=PackedStringArray("fall_state", "scared_state", "curious_state", "move_state")]
+script = ExtResource("8_6iypd")
+fall_state = NodePath("../Fall")
+scared_state = NodePath("../Scared")
+curious_state = NodePath("../Curious")
+move_state = NodePath("../Move")
+
+[node name="Fall" type="Node" parent="Environment/Creature/CreatureStateMachine/Wild" node_paths=PackedStringArray("idle_state")]
+script = ExtResource("12_imku0")
+idle_state = NodePath("../Idle")
+
+[node name="Domestic" type="Node" parent="Environment/Creature/CreatureStateMachine"]
+
+[node name="FollowMove" type="Node" parent="Environment/Creature/CreatureStateMachine/Domestic"]
+
+[node name="FreeMove" type="Node" parent="Environment/Creature/CreatureStateMachine/Domestic"]
+
+[node name="Idle" type="Node" parent="Environment/Creature/CreatureStateMachine/Domestic"]
+
+[node name="ScaredArea" type="Area3D" parent="Environment/Creature"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Creature/ScaredArea"]
+shape = SubResource("SphereShape3D_4arys")
+
+[connection signal="body_entered" from="Environment/Creature/ScaredArea" to="Environment/Creature" method="_on_scared_area_body_entered"]
+[connection signal="body_exited" from="Environment/Creature/ScaredArea" to="Environment/Creature" method="_on_scared_area_body_exited"]
