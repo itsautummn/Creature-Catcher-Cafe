@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgg5l05ggvafv"]
+
+[ext_resource type="PackedScene" uid="uid://cjjmp5rsi3iri" path="res://Time Controller/time_controller.tscn" id="3_owhaw"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Time" type="Node3D" parent="."]
+
+[node name="TimeController" parent="Time" instance=ExtResource("3_owhaw")]
+
+[node name="Camera3D" type="Camera3D" parent="."]

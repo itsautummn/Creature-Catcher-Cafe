@@ -1,0 +1,7 @@
+[gd_resource type="Gradient" format=3 uid="uid://ckmv7vroeykh7"]
+
+[resource]
+offsets = PackedFloat32Array(0, 0.166667, 0.333333, 0.666667, 0.833333, 1)
+colors = PackedColorArray(0.168627, 0.172549, 0.396078, 1, 0.2, 0.360784, 0.619608, 1, 0, 0.329412, 0.968627, 1, 0, 0.329412, 0.968627, 1, 0.435294, 0.333333, 0.360784, 1, 0.168627, 0.172549, 0.396078, 1)
+metadata/_snap_enabled = true
+metadata/_snap_count = 6

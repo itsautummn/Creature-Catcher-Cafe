@@ -1,0 +1,107 @@
+[gd_scene load_steps=17 format=3 uid="uid://c3yy68sh8tmt4"]
+
+[ext_resource type="Script" uid="uid://cq7hony13ffya" path="res://Player/States/player_controller.gd" id="1_x3vf3"]
+[ext_resource type="Shader" uid="uid://ykk80vcmy0ol" path="res://Player/player_body.gdshader" id="2_sweqy"]
+[ext_resource type="Script" uid="uid://pwxmqu5umig1" path="res://Player/Camera/camera_spring_arm.gd" id="3_2hs0m"]
+[ext_resource type="Script" uid="uid://6esjksdnnaso" path="res://Player/Camera/camera_follow.gd" id="4_1jxqw"]
+[ext_resource type="Script" uid="uid://sb8v87w27bsc" path="res://Player/States/player_state_controller.gd" id="5_apopc"]
+[ext_resource type="Script" uid="uid://0lay856cn6ui" path="res://Player/States/player_idle_state.gd" id="5_x3vf3"]
+[ext_resource type="Script" uid="uid://bvju3f3shi0m6" path="res://Player/States/player_walk_state.gd" id="6_apopc"]
+[ext_resource type="Script" uid="uid://bwwqt2xuevyvi" path="res://Player/States/player_sprint_state.gd" id="7_5htga"]
+[ext_resource type="Script" uid="uid://dto5lerdfajsh" path="res://Player/States/player_jump_state.gd" id="8_p5o4e"]
+[ext_resource type="Script" uid="uid://mot8vwubb6qt" path="res://Player/States/player_fall_state.gd" id="9_gu6f8"]
+[ext_resource type="Script" uid="uid://bijbch38hfuyf" path="res://Player/States/player_aim_state.gd" id="10_dkpta"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fhvb5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_avygq"]
+render_priority = 0
+shader = ExtResource("2_sweqy")
+shader_parameter/albedo = Color(0.28389, 0.874018, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_w3cyx"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_jo3wy"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_lufoj"]
+radius = 0.3
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_x3vf3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_fhvb5")
+
+[node name="Shape" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Shape"]
+material_override = SubResource("ShaderMaterial_avygq")
+mesh = SubResource("CapsuleMesh_w3cyx")
+skeleton = NodePath("../..")
+
+[node name="Eyes" type="Node3D" parent="Shape"]
+
+[node name="Left Eye" type="MeshInstance3D" parent="Shape/Eyes"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -0.2, 0.491, -0.442)
+mesh = SubResource("SphereMesh_jo3wy")
+
+[node name="Right Eye" type="MeshInstance3D" parent="Shape/Eyes"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.2, 0.491, -0.442)
+mesh = SubResource("SphereMesh_jo3wy")
+
+[node name="SpringArmPivot" type="Node3D" parent="." node_paths=PackedStringArray("spring_arm", "camera")]
+unique_name_in_owner = true
+script = ExtResource("3_2hs0m")
+spring_arm = NodePath("SpringArm3D")
+camera = NodePath("PlayerCamera")
+zoom_speed = 0.5
+min_zoom_length = 2.0
+
+[node name="SpringArm3D" type="SpringArm3D" parent="SpringArmPivot"]
+shape = SubResource("SphereShape3D_lufoj")
+spring_length = 6.0
+
+[node name="CameraFollow" type="Node3D" parent="SpringArmPivot/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 0)
+
+[node name="PlayerCamera" type="Camera3D" parent="SpringArmPivot" node_paths=PackedStringArray("camera_follow")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.999321, 0.036853, 0, -0.036853, 0.999321, 0, 0.533157, 0)
+script = ExtResource("4_1jxqw")
+camera_follow = NodePath("../SpringArm3D/CameraFollow")
+
+[node name="CameraAimFollow" type="Node3D" parent="SpringArmPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.21197, 1.22975, 1.6125)
+
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+unique_name_in_owner = true
+script = ExtResource("5_apopc")
+starting_state = NodePath("PlayerIdleState")
+
+[node name="PlayerIdleState" type="Node" parent="PlayerStateMachine"]
+unique_name_in_owner = true
+script = ExtResource("5_x3vf3")
+
+[node name="PlayerWalkState" type="Node" parent="PlayerStateMachine"]
+unique_name_in_owner = true
+script = ExtResource("6_apopc")
+
+[node name="PlayerSprintState" type="Node" parent="PlayerStateMachine"]
+unique_name_in_owner = true
+script = ExtResource("7_5htga")
+movement_speed = 7.5
+
+[node name="PlayerJumpState" type="Node" parent="PlayerStateMachine"]
+unique_name_in_owner = true
+script = ExtResource("8_p5o4e")
+
+[node name="PlayerFallState" type="Node" parent="PlayerStateMachine"]
+unique_name_in_owner = true
+script = ExtResource("9_gu6f8")
+
+[node name="PlayerAimState" type="Node" parent="PlayerStateMachine"]
+unique_name_in_owner = true
+script = ExtResource("10_dkpta")
+movement_speed = 1.5
+
+[connection signal="is_aiming" from="SpringArmPivot" to="." method="_on_spring_arm_pivot_is_aiming"]
