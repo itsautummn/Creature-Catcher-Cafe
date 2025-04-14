@@ -7,7 +7,9 @@ signal creature_tamed
 @export_group("Nodes")
 @export var tame_bar : ProgressBar3D
 @export_group("Stats")
-@export_range(0.0, 1.0, 0.01) var tame_speed : float = 1.0
+@export var max_love_needed : int
+@export var love_increase_speed : float
+@export var love : float
 
 
 func enter() -> void:
@@ -23,7 +25,7 @@ func exit() -> void:
 
 func process_physics(delta : float) -> TestCreatureState:
 	# Increase tame bar
-	tame_bar.progress_ratio += (delta * tame_speed)
+	tame_bar.progress_ratio += (delta * love_increase_speed)
 	
 	# Check if tame bar is finished filling
 	if tame_bar.progress_ratio == 1.0:

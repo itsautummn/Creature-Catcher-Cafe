@@ -1,10 +1,6 @@
 class_name TestWildStateMachine
 extends Node
 
-@export var max_love_needed : int
-@export var love_increase_speed : float
-@export var love : float
-
 @export var starting_state : TestCreatureState
 var current_state : TestCreatureState:
 	set(new):
@@ -22,7 +18,6 @@ func init(parent : TestCreature) -> void:
 	
 
 func process_physics(delta : float) -> void:
-	print(current_state)
 	var new_state = current_state.process_physics(delta)
 	if new_state:
 		current_state = new_state

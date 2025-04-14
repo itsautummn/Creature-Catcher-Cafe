@@ -2,21 +2,22 @@
 
 [ext_resource type="Shader" uid="uid://b8l3gx2sxrtql" path="res://progress_bar.gdshader" id="1_j3tfb"]
 [ext_resource type="Script" uid="uid://bfsow7cmu3s0u" path="res://progress_bar_3d.gd" id="1_p3f5o"]
-[ext_resource type="Texture2D" uid="uid://1sytuo2saicc" path="res://icon.svg" id="2_p3f5o"]
+[ext_resource type="Texture2D" uid="uid://2cmu51us7086" path="res://Sprite-0001.png" id="3_p3f5o"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3v7ru"]
 render_priority = 0
 shader = ExtResource("1_j3tfb")
-shader_parameter/billboard = false
+shader_parameter/billboard = true
 shader_parameter/progress = 0.0
 shader_parameter/progress_color = Color(0, 1, 0, 1)
 shader_parameter/empty_color = Color(0.31802, 0.31802, 0.31802, 1)
+shader_parameter/tex = ExtResource("3_p3f5o")
 
 [node name="ProgressBar3D" type="Node3D"]
 script = ExtResource("1_p3f5o")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(0.970816, 0, 0, 0, 0.0970816, 0, 0, 0, 0.970816, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_3v7ru")
 billboard = 1
-texture = ExtResource("2_p3f5o")
+texture = ExtResource("3_p3f5o")

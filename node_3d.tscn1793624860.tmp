@@ -121,9 +121,8 @@ move_state = NodePath("../Move")
 script = ExtResource("12_imku0")
 idle_state = NodePath("../Idle")
 
-[node name="Domestic" type="Node" parent="Creature/CreatureStateMachine" node_paths=PackedStringArray("starting_state")]
+[node name="Domestic" type="Node" parent="Creature/CreatureStateMachine"]
 script = ExtResource("13_wlxy5")
-starting_state = NodePath("FreeMove")
 
 [node name="FollowMove" type="Node" parent="Creature/CreatureStateMachine/Domestic"]
 

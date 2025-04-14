@@ -3,11 +3,9 @@ extends CharacterBody3D
 
 @onready var state_machine : TestCreatureStateMachine = $CreatureStateMachine
 @onready var scared_area : Area3D = $ScaredArea
-@onready var curious_area : Area3D = $CuriousArea
 @onready var shape : Node3D = $Shape
 
 var bodies_in_scared_area : Array = []
-var bodies_in_detection_area : Array = []
 
 
 func _ready() -> void:

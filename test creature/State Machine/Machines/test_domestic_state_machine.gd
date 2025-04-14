@@ -7,7 +7,6 @@ var current_state : TestCreatureState
 
 func init(parent : TestCreature) -> void:
 	for child in get_children():
-		print(child)
 		child.parent = get_parent().creature
 	current_state = starting_state
 	
